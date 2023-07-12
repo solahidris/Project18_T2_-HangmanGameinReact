@@ -11,9 +11,27 @@ function App() {
 
   // Random index generator
   const randomArrayIndexHandler = () => {
-    setArrayIndex(
-      arrayIndexArray[Math.floor(Math.random() * arrayIndexArray.length)]
-    );
+    let newIndex;
+    do {
+      newIndex =
+        arrayIndexArray[Math.floor(Math.random() * arrayIndexArray.length)];
+    } while (newIndex === arrayIndex); // Make sure not same as previous value
+
+    setArrayIndex(newIndex);
+  };
+
+  // Next word - Random index generator (After Win Game)
+  const NextWordHandler = () => {
+    let newIndex;
+    do {
+      newIndex =
+        arrayIndexArray[Math.floor(Math.random() * arrayIndexArray.length)];
+    } while (newIndex === arrayIndex); // Make sure not same as previous value
+
+    setArrayIndex(newIndex);
+    setGameWin(false); // Reset Game not Win
+    setGameOver(false); // Reset Game not Lose
+    setSubmmittedCounter(0); // Reset Counter
   };
 
   // Type Input Answer
@@ -24,24 +42,41 @@ function App() {
   };
   // Submit Answer
   const [answerSubmitted, setAnswerSubmitted] = useState("");
-  const submitAnswerHandler = () => {
-    setAnswerSubmitted(answerTyped); // Answer Submitted to Compare with Hangman
-    setAnswerTyped(""); // Clear Input Box
-    // compareAnswer();
+  const [submittedCounter, setSubmmittedCounter] = useState(0);
+  const submitAnswerHandler = (event) => {
+    if (answerTyped === "") {
+      event.preventDefault(); // Prevents the default behavior of the button
+    } else {
+      setAnswerSubmitted(answerTyped); // Answer Submitted to Compare with Hangman
+      setAnswerTyped(""); // Clear Input Box
+      if (submittedCounter < 5) {
+        // Attempts Tried Counter and limit at 5
+        setSubmmittedCounter(submittedCounter + 1);
+      }
+    }
   };
 
-  // Same answerSubmitted === wordArray[arrayIndex]
-  // eslint-disable-next-line
+  // Game State
   const [gameOver, setGameOver] = useState(false);
-  // eslint-disable-next-line
   const [gameWin, setGameWin] = useState(false);
 
-  // Compare Answer & Reduce Attempts Left?
-  // answerSubmitted === wordArray[arrayIndex])
-
-  // Display WIN / LOSE
+  // Immediately Reflect Game State
   useEffect(() => {
-  }, []);
+    const checkIfLose = () => {
+      if (submittedCounter === 5) {
+        setGameOver(true);
+      }
+    };
+    const checkIfWin = () => {
+      if (answerSubmitted === wordArray[arrayIndex]) {
+        setGameWin(true);
+      }
+    };
+
+    checkIfLose();
+    checkIfWin();
+    // eslint-disable-next-line
+  }, [submittedCounter, answerSubmitted, wordArray[arrayIndex]]);
 
   // RETURN
   // RETURN
@@ -101,6 +136,11 @@ function App() {
         </div>
       </div>
 
+      {/* Attempts Left */}
+      <div className="bg-green-500/50 text-center py-5">
+        <p>Attempts Left: {5 - submittedCounter}</p>
+      </div>
+
       {/* Input For Guessing */}
       <div className="flex flex-col justify-center items-center bg-yellow-200/50 py-5">
         <div>
@@ -112,33 +152,68 @@ function App() {
             className="bg-stone-100 p-3 rounded-lg mb-3"
           ></input>
         </div>
+
+        {/* Button To Display - Submit / Next */}
         <div>
-          <button
-            onClick={submitAnswerHandler}
-            className="bg-green-600 text-white p-3 rounded-lg"
-          >
-            Submit Answer
-          </button>
+          {gameWin === false && gameOver === false && (
+            <button
+              onClick={submitAnswerHandler}
+              className="bg-blue-600 text-white p-3 rounded-lg"
+            >
+              Submit Answer
+            </button>
+          )}
+          {gameWin === false && gameOver === true && (
+            <button
+              onClick={NextWordHandler}
+              className="bg-red-600 text-white p-3 rounded-lg"
+            >
+              Next Hangman - Try Again
+            </button>
+          )}
+          {gameWin === true && (
+            <button
+              onClick={NextWordHandler}
+              className="bg-green-600 text-white p-3 rounded-lg"
+            >
+              Next Hangman
+            </button>
+          )}
         </div>
-        
-        <p>answerTyped: {answerTyped}</p>
-        <p>answerSubmitted: {answerSubmitted}</p>
+
+        <p>MAKE_GAME_LOGIC_UI_answerTyped: {answerTyped}</p>
+        <p>MAKE_GAME_LOGIC_UI_answerSubmitted: {answerSubmitted}</p>
       </div>
 
       {/* Your Answer vs Guessing Word */}
       <div className="bg-red-300/50 py-5">
         <p className="text-center">Your Answer: {answerSubmitted}</p>
-        <p className="text-center">Question Answer: {wordArray[arrayIndex]} </p>
-      
+        <p className="text-center">Make a list of 5 tries: {answerSubmitted}</p>
+        <p className="text-center">
+          make list turn red if answer wrong, green right {answerSubmitted}
+        </p>
+        <p className="text-center">
+          MAKE_GAME_LOGIC_UI_Question Answer: {wordArray[arrayIndex]}{" "}
+        </p>
+
         <p className="text-center">----------------------</p>
-      
-        <p className="text-center">gameOver State: {gameOver.toString()} </p>
-        <p className="text-center">gameWin State: {gameWin.toString()} </p>
-      
+
+        <p className="text-center">
+          MAKE_GAME_LOGIC_UI_gameOver State: {gameOver.toString()}{" "}
+        </p>
+        <p className="text-center">
+          MAKE_GAME_LOGIC_UI_gameWin State: {gameWin.toString()}{" "}
+        </p>
+
         <p className="text-center">----------------------</p>
-      
-        <p className="text-center">You Won!</p>
-        <p className="text-center">Game Over</p>
+
+        <p className="text-center">
+          MAKE_GAME_LOGIC_UI_submittedCounter: {submittedCounter}{" "}
+        </p>
+        {submittedCounter === 5 && <p className="text-center">Game Over</p>}
+        {gameWin === true && <p className="text-center">You Won!</p>}
+
+        {/* <p className="text-center">You Won!</p> */}
       </div>
 
       {/* Attemps Remaining */}
@@ -146,7 +221,6 @@ function App() {
         <p>do this after gamestatus</p>
         {/* Tries Left: {attemptsLeft} / {attemptsTotal} */}
       </div>
-
     </div> // Main DIV
   );
 }
