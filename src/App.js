@@ -118,6 +118,14 @@ function App() {
       : setShowIntroButton(false);
   };
 
+  // App Backend State Show/Hide
+  const [showBackendButton, setShowBackendButton] = useState(false);
+  const DisplayStateBackendHandler = () => {
+    showBackendButton === false
+      ? setShowBackendButton(true)
+      : setShowBackendButton(false);
+  };
+
   // Answered 5 List Bottom
   const [answeredFiveList, setAnsweredFiveList] = useState([]);
 
@@ -126,9 +134,9 @@ function App() {
 
   // RETURN
   return (
-    <div className="min-h-[100vh] bg-gradient-to-b from-sky-200 from-10% via-indigo-500 via-30% to-emerald-500 to-90%">
+    <div className="min-h-[100vh] bg-gradient-to-b from-sky-200 from-10% via-indigo-500 via-30% to-emerald-500 to-90% py-[2rem]">
       {/* App Description */}
-      <div className="pt-5 pb-2 flex flex-col text-center mx-5 mb-[1rem]">
+      <div className="pb-2 flex flex-col text-center mx-5 mb-[1rem]">
         <div className="bg-stone-100 rounded-xl py-3">
           <h1 className="text-xl font-bold">Project #18</h1>
           <h2 className="text-3xl font-bold italic">Pokemon Hangman 웃</h2>
@@ -275,19 +283,39 @@ function App() {
       </div>
 
       {/* GAME UI - BACKEND */}
-      <div className="py-5 text-center">
-        <p>Game Backend - Under The Hood</p>
-        <p>-----------------------------</p>
-        <p>MAKE_GAME_LOGIC_UI_Array Index Value: {arrayIndex}</p>
-        <p>-----------------------------</p>
-        <p>MAKE_GAME_LOGIC_UI_answerTyped: {answerTyped}</p>
-        <p>MAKE_GAME_LOGIC_UI_answerSubmitted: {answerSubmitted}</p>
-        <p>-----------------------------</p>
-        <p>MAKE_GAME_LOGIC_UI_Question Answer: {wordArray[arrayIndex]} </p>
-        <p>MAKE_GAME_LOGIC_UI_gameOver State: {gameOver.toString()} </p>
-        <p>MAKE_GAME_LOGIC_UI_gameWin State: {gameWin.toString()} </p>
-        <p>MAKE_GAME_LOGIC_UI_submittedCounter: {submittedCounter} </p>
-      </div>
+      {showBackendButton === false ? (
+          <button
+            onClick={DisplayStateBackendHandler}
+            className="bg-emerald-800 text-white rounded-lg flex justify-center mx-5 py-1 px-3 mt-5"
+          >
+            Show Game Backend
+          </button>
+        ) : (
+          <div className="flex flex-col justify-center bg-stone-100/50 rounded-lg px-5 py-4 mt-5 mx-[4rem]">
+            <button
+              onClick={DisplayStateBackendHandler}
+              className="bg-emerald-800 text-white rounded-lg flex justify-center my-2 py-1 px-3"
+            >
+              Hide Game Backend
+            </button>
+            <div className="py-5 text-center bg-yellow-200/80 mb-3 mt-4 rounded-lg">
+              <p className="font-bold text-lg italic">Game Backend - Under The Hood</p>
+              <p className="py-3">-----------------------------</p>
+              <div className="text-xs text-start mx-5">
+                <p>arrayIndex: {arrayIndex}</p>
+                <p>answerTyped: {answerTyped}</p>
+                <p>answerSubmitted: {answerSubmitted}</p>
+                <p>wordArray[arrayIndex]: {wordArray[arrayIndex]} </p>
+                <p>gameOver.toString(): {gameOver.toString()} </p>
+                <p>gameWin.toString(): {gameWin.toString()} </p>
+                <p>submittedCounter: {submittedCounter} </p>
+              </div>
+            </div>
+          </div>
+        )}
+      
+
+
     </div> // Main DIV
   );
 }
