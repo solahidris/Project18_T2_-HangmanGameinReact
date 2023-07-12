@@ -99,25 +99,46 @@ function App() {
     // eslint-disable-next-line
   }, [submittedCounter, answerSubmitted, wordArray[arrayIndex]]);
 
+  const [showIntroButton, setShowIntroButton] = useState(false);
+  const appIntro = "implement a hangman game in React where users will guess a hidden word within a set of attempts. The user is shown a “You won” or “Game Over” message based on whether the word is guessed within the given number of attempts."; 
+  const DisplayStateIntroHandler = () => {
+    showIntroButton === false ? setShowIntroButton(true) : setShowIntroButton(false);
+  };
+
   // RETURN
   return (
-    <div className="bg-gradient-to-b from-stone-100 to-stone-500 min-h-[100vh]">
+    <div className="min-h-[100vh] bg-gradient-to-b from-sky-200 from-10% via-indigo-500 via-30% to-emerald-500 to-90%">
       {/* App Description */}
-      <div className="pt-5 pb-2 flex flex-col text-center mx-[20%] mb-[2rem]">
-        <h1 className="text-3xl font-bold">P18-Hangman</h1>
+      <div className="pt-5 pb-2 flex flex-col text-center mx-5 mb-[1rem]">
+        <div className="bg-stone-100 rounded-xl py-3">
+          <h1 className="text-xl font-bold">Project #18</h1>
+          <h2 className="text-3xl font-bold italic">Pokemon Hangman 웃</h2>
+        </div>
+        {showIntroButton === false ? (
+          <button onClick={DisplayStateIntroHandler} className="bg-indigo-500 text-white rounded-lg flex justify-center mx-[7rem] py-1 mt-5">
+            Show App Description
+          </button>
+        ) : (
+          <div className="flex flex-col justify-center bg-stone-100/50 rounded-lg px-5 py-2 mt-5 mx-[4rem]">
+            <button onClick={DisplayStateIntroHandler} className="bg-indigo-500 text-white rounded-lg flex justify-center mx-5 my-2">
+              Hide App Description
+            </button>
+            <p className="text-xs">{appIntro}</p>
+          </div>
+        )}
         <h6 className="text-xs">
-          implement a hangman game in React where users will guess a hidden word
-          within a set of attempts. The user is shown a “You won” or “Game Over”
-          message based on whether the word is guessed within the given number
-          of attempts.
+          
         </h6>
       </div>
 
-        {/* Word to Guess */}
-      <div className="bg-stone-100 mx-5 rounded-lg py-5 flex flex-col justify-center">
+      {/* Word to Guess */}
+      <div className="bg-sky-100 border-4 border-black mx-5 rounded-lg py-5 flex flex-col justify-center">
         {/* Pokemon ? Picture */}
         <div className="flex justify-center pb-4">
-          <img src={whatpokemon} className="bg-stone-200 p-2 w-[200px] h-[200px] rounded-lg" />
+          <img
+            src={whatpokemon}
+            className="bg-stone-200 p-2 w-[200px] h-[200px] rounded-lg"
+          />
         </div>
         {/* Word to Guess - Mapped */}
         <div className="flex justify-center gap-x-2">
@@ -146,8 +167,11 @@ function App() {
       {/* New word Button */}
       {/* Button - New Word */}
       <div className="flex flex-col">
-        <div className="flex justify-end mx-3 my-3">
-          <button onClick={randomArrayIndexHandler}className="bg-blue-600 text-white rounded-lg px-3 py-2 text-[0.5rem]">
+        <div className="flex justify-end mx-5 my-3">
+          <button
+            onClick={randomArrayIndexHandler}
+            className="bg-blue-600 text-white rounded-lg px-3 py-2 text-[0.5rem]"
+          >
             Im a Noob
           </button>
         </div>
@@ -163,9 +187,19 @@ function App() {
           </div>
         )}
         {submittedCounter === 5 && gameWin === false && (
-          <div className=" flex justify-center"><p className="bg-red-500 text-white text-[1.5rem] px-[3rem] py-[1rem] rounded-lg">Game Over! 😔</p></div>
+          <div className=" flex justify-center">
+            <p className="bg-red-500 text-white text-[1.5rem] px-[3rem] py-[1rem] rounded-lg">
+              Game Over! 😔
+            </p>
+          </div>
         )}
-        {gameWin === true && <div className="flex justify-center"><p className="bg-green-500 text-white text-[1.5rem] px-[3rem] py-[1rem] rounded-lg">You Won! 😏</p></div>}
+        {gameWin === true && (
+          <div className="flex justify-center">
+            <p className="bg-green-500 text-white text-[1.5rem] px-[3rem] py-[1rem] rounded-lg">
+              You Won! 😏
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Input For Guessing */}
@@ -215,7 +249,9 @@ function App() {
         <div className="bg-stone-200 mx-5 p-5">
           <p className="">Your Answer: {answerSubmitted}</p>
           <p className="">Make a list of 5 tries: {answerSubmitted}</p>
-          <p className="">make list turn red if answer wrong, green right {answerSubmitted}</p>
+          <p className="">
+            make list turn red if answer wrong, green right {answerSubmitted}
+          </p>
         </div>
       </div>
 
