@@ -30,48 +30,18 @@ function App() {
     // compareAnswer();
   };
 
-  // Attemts - Total, Left, Counter
-  const attemptsHandler = () => {
-    attemptsLeft !== 0 && setAttemptsLeft(attemptsLeft - 1);
-  };
-
   // Same answerSubmitted === wordArray[arrayIndex]
-  const attemptsTotal = 5;
-  const [attemptsLeft, setAttemptsLeft] = useState(attemptsTotal);
+  // eslint-disable-next-line
   const [gameOver, setGameOver] = useState(false);
+  // eslint-disable-next-line
   const [gameWin, setGameWin] = useState(false);
-  const [renderMessage, setRenderMessage] = useState(false);
-  // const compareAnswer = () => {
-  //   if (answerSubmitted !== wordArray[arrayIndex]) {
-  //     attemptsLeft > 0 && setAttemptsLeft(attemptsLeft - 1);
-  //     attemptsLeft === 1 && setGameOver(true); // if value != on last attempt, set gameover
-  //   } else if (answerSubmitted === wordArray[arrayIndex]) {
-  //     setGameWin(true)}
-  // };
 
-  // useEffect(() => {
-  //   if (gameWin) {
-  //     // Perform any additional actions you need here
-  //     // This code will execute when gameWin is set to true
-  //     // You can add any logic or API calls you require
-  //     setRenderMessage(true);
-  //   }
-  // }, [gameWin]);
+  // Compare Answer & Reduce Attempts Left?
+  // answerSubmitted === wordArray[arrayIndex])
 
-  const compareAnswer = () => {
-    if (answerSubmitted !== wordArray[arrayIndex]) {
-      attemptsLeft > 0 && setAttemptsLeft(attemptsLeft - 1);
-      attemptsLeft === 1 && setGameOver(true); // if value != on last attempt, set gameover
-    } else if (answerSubmitted === wordArray[arrayIndex]) {
-      setGameWin(true);
-    }
-  };
-
+  // Display WIN / LOSE
   useEffect(() => {
-    if (gameWin) {setRenderMessage(true)}
-    compareAnswer();
-  }, [answerSubmitted, arrayIndex, attemptsLeft, gameWin]);
-
+  }, []);
 
   // RETURN
   // RETURN
@@ -123,7 +93,7 @@ function App() {
           </button>
         </div>
         {/* Button - Text Below to show logic*/}
-        <div>
+        <div className="text-center pt-4">
           <p className="text-xs">
             This button changes the arrayIndex Value to a random number
           </p>
@@ -150,7 +120,7 @@ function App() {
             Submit Answer
           </button>
         </div>
-
+        
         <p>answerTyped: {answerTyped}</p>
         <p>answerSubmitted: {answerSubmitted}</p>
       </div>
@@ -159,27 +129,24 @@ function App() {
       <div className="bg-red-300/50 py-5">
         <p className="text-center">Your Answer: {answerSubmitted}</p>
         <p className="text-center">Question Answer: {wordArray[arrayIndex]} </p>
+      
+        <p className="text-center">----------------------</p>
+      
         <p className="text-center">gameOver State: {gameOver.toString()} </p>
         <p className="text-center">gameWin State: {gameWin.toString()} </p>
-        <p className="text-center">Question Answer: {wordArray[arrayIndex]} </p>
-        <p className="text-center">-</p>
-        {attemptsLeft >= 1 ? (
-          <p className="text-center">Tries Left: {attemptsLeft} / {attemptsTotal}</p>
-        ) : (
-          <p className="text-center">Game Over</p>
-        )}
-        {renderMessage && <p className="text-center">You Won!</p>}
-
+      
+        <p className="text-center">----------------------</p>
+      
+        <p className="text-center">You Won!</p>
+        <p className="text-center">Game Over</p>
       </div>
 
       {/* Attemps Remaining */}
-      <div>
-        <p>Attempts Left:</p>
-        <p>
-          {attemptsLeft} / {attemptsTotal}
-        </p>
-        <button onClick={attemptsHandler}>minus attempts</button>
+      <div className="py-5 text-center">
+        <p>do this after gamestatus</p>
+        {/* Tries Left: {attemptsLeft} / {attemptsTotal} */}
       </div>
+
     </div> // Main DIV
   );
 }
