@@ -53,6 +53,8 @@ function App() {
     setGameWin(false); // Reset Game not Win
     setGameOver(false); // Reset Game not Lose
     setSubmmittedCounter(0); // Reset Counter
+    setAnswerSubmitted("");
+    setAnsweredFiveList([]); // Reset Answer List
   };
 
   // Type Input Answer
@@ -69,6 +71,7 @@ function App() {
       event.preventDefault(); // Prevents the default behavior of the button
     } else {
       setAnswerSubmitted(answerTyped); // Answer Submitted to Compare with Hangman
+      // answerFiveListHandler(answerSubmitted);
       setAnswerTyped(""); // Clear Input Box
       if (submittedCounter < 5) {
         // Attempts Tried Counter and limit at 5
@@ -86,6 +89,7 @@ function App() {
     const checkIfLose = () => {
       if (submittedCounter === 5) {
         setGameOver(true);
+        setAnsweredFiveList([]);
       }
     };
     const checkIfWin = () => {
@@ -93,17 +97,32 @@ function App() {
         setGameWin(true);
       }
     };
+    const answerFiveListHandler = () => { // 5 Answered Submitted List
+      submittedCounter === 1 && answerSubmitted !== "" && setAnsweredFiveList([answerSubmitted]);
+      answeredFiveList.length > 0 && submittedCounter < 5 && answerSubmitted !== "" && setAnsweredFiveList(prevList => [...prevList, answerSubmitted]);
+    };  
 
     checkIfLose();
     checkIfWin();
+    answerFiveListHandler();
     // eslint-disable-next-line
   }, [submittedCounter, answerSubmitted, wordArray[arrayIndex]]);
 
+  // App Description State Show/Hide
   const [showIntroButton, setShowIntroButton] = useState(false);
-  const appIntro = "implement a hangman game in React where users will guess a hidden word within a set of attempts. The user is shown a “You won” or “Game Over” message based on whether the word is guessed within the given number of attempts."; 
+  const appIntro =
+    "implement a hangman game in React where users will guess a hidden word within a set of attempts. The user is shown a “You won” or “Game Over” message based on whether the word is guessed within the given number of attempts.";
   const DisplayStateIntroHandler = () => {
-    showIntroButton === false ? setShowIntroButton(true) : setShowIntroButton(false);
+    showIntroButton === false
+      ? setShowIntroButton(true)
+      : setShowIntroButton(false);
   };
+
+  // Answered 5 List Bottom
+  const [answeredFiveList, setAnsweredFiveList] = useState([]);
+
+  
+
 
   // RETURN
   return (
@@ -115,20 +134,23 @@ function App() {
           <h2 className="text-3xl font-bold italic">Pokemon Hangman 웃</h2>
         </div>
         {showIntroButton === false ? (
-          <button onClick={DisplayStateIntroHandler} className="bg-indigo-500 text-white rounded-lg flex justify-center mx-[7rem] py-1 mt-5">
+          <button
+            onClick={DisplayStateIntroHandler}
+            className="bg-indigo-500 text-white rounded-lg flex justify-center mx-[7rem] py-1 mt-5"
+          >
             Show App Description
           </button>
         ) : (
           <div className="flex flex-col justify-center bg-stone-100/50 rounded-lg px-5 py-2 mt-5 mx-[4rem]">
-            <button onClick={DisplayStateIntroHandler} className="bg-indigo-500 text-white rounded-lg flex justify-center mx-5 my-2">
+            <button
+              onClick={DisplayStateIntroHandler}
+              className="bg-indigo-500 text-white rounded-lg flex justify-center mx-5 my-2"
+            >
               Hide App Description
             </button>
             <p className="text-xs">{appIntro}</p>
           </div>
         )}
-        <h6 className="text-xs">
-          
-        </h6>
       </div>
 
       {/* Word to Guess */}
@@ -136,8 +158,8 @@ function App() {
         {/* Pokemon ? Picture */}
         <div className="flex justify-center pb-4">
           <img
-            src={whatpokemon}
-            className="bg-stone-200 p-2 w-[200px] h-[200px] rounded-lg"
+            src={whatpokemon} alt="pokemon?"
+            className="bg-gradient-to-b from-sky-200 to-sky-500 p-2 w-[200px] h-[200px] rounded-lg"
           />
         </div>
         {/* Word to Guess - Mapped */}
@@ -147,10 +169,10 @@ function App() {
             return (
               <label
                 key={index}
-                className={`px-[1rem] py-[0.5rem] bg-stone-700 text-white rounded-lg ${
+                className={`px-[1rem] py-[0.5rem] bg-gradient-to-r from-blue-800 to-blue-600 text-white rounded-lg ${
                   shouldHideLetter
                     ? "opacity-50 text-opacity-10"
-                    : "opacity-100"
+                    : "opacity-100 font-bold text-yellow-300"
                 }`}
               >
                 {shouldHideLetter ? "?" : letter}
@@ -181,7 +203,7 @@ function App() {
       <div className="">
         {submittedCounter !== 5 && gameWin === false && (
           <div className="flex justify-center">
-            <p className="bg-yellow-200/90 text-[1rem] px-[2rem] py-[0.7rem] rounded-lg">
+            <p className="bg-yellow-300 text-[1rem] px-[2rem] py-[0.7rem] rounded-lg">
               Attempts Left: {5 - submittedCounter}
             </p>
           </div>
@@ -244,14 +266,11 @@ function App() {
       </div>
 
       {/* Your Answer vs Guessing Word */}
-      <div className="bg-stone-100 mx-5 rounded-lg py-5 flex flex-col justify-center">
+      <div className="bg-stone-100 mx-5 mt-[3rem] rounded-lg py-5 flex flex-col justify-center">
         {/* Pokemon ? Picture */}
-        <div className="bg-stone-200 mx-5 p-5">
-          <p className="">Your Answer: {answerSubmitted}</p>
-          <p className="">Make a list of 5 tries: {answerSubmitted}</p>
-          <p className="">
-            make list turn red if answer wrong, green right {answerSubmitted}
-          </p>
+        <div className="bg-stone-200/50 rounded-lg mx-5 p-5">
+          <button className="mb-4 px-4 py-2 bg-indigo-400 text-white rounded-lg">Your Answers: </button>
+          {answeredFiveList.map((item, index)=>(<p key={index}>{index+1} ) {item}</p>))}
         </div>
       </div>
 
