@@ -18,7 +18,7 @@ const AppDescription = () => {
       {showIntroButton === false ? (
         <button
           onClick={DisplayStateIntroHandler}
-          className="bg-indigo-500 text-white rounded-lg flex justify-center mx-[7rem] py-1 mt-5"
+          className="bg-indigo-500 text-white text-xs rounded-lg flex justify-center mx-[7rem] py-1 mt-5"
         >
           Show App Description
         </button>
