@@ -21,10 +21,10 @@ const GameBackend = ({
       </button>
       {showBackendButton && (
         <div className="py-5 text-center bg-green-100/80 mb-3 mt-4 rounded-lg">
-          <p className="font-bold text-base">
+          <p className="font-bold text-base text-sm">
             Game Backend - Under The Hood
           </p>
-          <p className="py-1">-----------------------------</p>
+          <p className="pb-1">-----------------------------</p>
           <div className="text-xs text-start mx-5">
             <p>arrayIndex: {arrayIndex}</p>
             <p>answerTyped: {answerTyped}</p>
