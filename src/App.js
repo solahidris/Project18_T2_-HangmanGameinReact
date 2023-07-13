@@ -24,6 +24,7 @@ function App() {
     "arcanine",
     "lugia",
   ];
+
   // Map number of index of array
   const arrayIndexArray = wordArray.map((_, index) => index);
   // arrayIndex to map as "Word To Guess"
@@ -97,10 +98,16 @@ function App() {
         setGameWin(true);
       }
     };
-    const answerFiveListHandler = () => { // 5 Answered Submitted List
-      submittedCounter === 1 && answerSubmitted !== "" && setAnsweredFiveList([answerSubmitted]);
-      answeredFiveList.length > 0 && submittedCounter < 5 && answerSubmitted !== "" && setAnsweredFiveList(prevList => [...prevList, answerSubmitted]);
-    };  
+    const answerFiveListHandler = () => {
+      // 5 Answered Submitted List
+      submittedCounter === 1 &&
+        answerSubmitted !== "" &&
+        setAnsweredFiveList([answerSubmitted]);
+      answeredFiveList.length > 0 &&
+        submittedCounter < 5 &&
+        answerSubmitted !== "" &&
+        setAnsweredFiveList((prevList) => [...prevList, answerSubmitted]);
+    };
 
     checkIfLose();
     checkIfWin();
@@ -128,9 +135,6 @@ function App() {
 
   // Answered 5 List Bottom
   const [answeredFiveList, setAnsweredFiveList] = useState([]);
-
-  
-
 
   // RETURN
   return (
@@ -166,28 +170,31 @@ function App() {
         {/* Pokemon ? Picture */}
         <div className="flex justify-center pb-4">
           <img
-            src={whatpokemon} alt="pokemon?"
+            src={whatpokemon}
+            alt="pokemon?"
             className="bg-gradient-to-b from-sky-200 to-sky-500 p-2 w-[200px] h-[200px] rounded-lg"
           />
         </div>
         {/* Word to Guess - Mapped */}
-        <div className="flex justify-center gap-x-2">
+        <div className="flex flex-wrap justify-center gap-x-2">
           {wordArray[arrayIndex].split("").map((letter, index) => {
             const shouldHideLetter = lettersToHide.includes(letter);
             return (
-              <label
-                key={index}
-                className={`px-[1rem] py-[0.5rem] bg-gradient-to-r from-blue-800 to-blue-600 text-white rounded-lg ${
-                  shouldHideLetter
-                    ? "opacity-50 text-opacity-10"
-                    : "opacity-100 font-bold text-yellow-300"
-                }`}
-              >
-                {shouldHideLetter ? "?" : letter}
-              </label>
+              <div key={index} className="flex items-center">
+                <label
+                  className={`px-[1rem] py-[0.5rem] bg-gradient-to-r from-blue-800 to-blue-600 text-white rounded-lg ${
+                    shouldHideLetter
+                      ? "opacity-50 text-opacity-10"
+                      : "opacity-100 font-bold text-yellow-300"
+                  }`}
+                >
+                  {shouldHideLetter ? "?" : letter}
+                </label>
+              </div>
             );
           })}
         </div>
+
         {/* Word to Guess - Text */}
         <div className="text-center font-bold text-sm pt-4">
           <p>Who's That Pokémon?</p>
@@ -277,45 +284,52 @@ function App() {
       <div className="bg-stone-100 mx-5 mt-[3rem] rounded-lg py-5 flex flex-col justify-center">
         {/* Pokemon ? Picture */}
         <div className="bg-stone-200/50 rounded-lg mx-5 p-5">
-          <button className="mb-4 px-4 py-2 bg-indigo-400 text-white rounded-lg">Your Answers: </button>
-          {answeredFiveList.map((item, index)=>(<p key={index}>{index+1} ) {item}</p>))}
+          <button className="mb-4 px-4 py-2 bg-indigo-400 text-white rounded-lg">
+            Your Answers:{" "}
+          </button>
+          {answeredFiveList.map((item, index) => (
+            <div key={index} className="py-1 bg-stone-100 my-2 rounded-lg px-3">
+              <p className="tracking-widest">
+                {index + 1}) {item}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* GAME UI - BACKEND */}
       {showBackendButton === false ? (
+        <button
+          onClick={DisplayStateBackendHandler}
+          className="bg-emerald-800 text-white rounded-lg flex justify-center mx-5 py-1 px-3 mt-5"
+        >
+          Show Game Backend
+        </button>
+      ) : (
+        <div className="flex flex-col justify-center bg-stone-100/50 rounded-lg px-5 py-4 mt-5 mx-[4rem]">
           <button
             onClick={DisplayStateBackendHandler}
-            className="bg-emerald-800 text-white rounded-lg flex justify-center mx-5 py-1 px-3 mt-5"
+            className="bg-emerald-800 text-white rounded-lg flex justify-center my-2 py-1 px-3"
           >
-            Show Game Backend
+            Hide Game Backend
           </button>
-        ) : (
-          <div className="flex flex-col justify-center bg-stone-100/50 rounded-lg px-5 py-4 mt-5 mx-[4rem]">
-            <button
-              onClick={DisplayStateBackendHandler}
-              className="bg-emerald-800 text-white rounded-lg flex justify-center my-2 py-1 px-3"
-            >
-              Hide Game Backend
-            </button>
-            <div className="py-5 text-center bg-yellow-200/80 mb-3 mt-4 rounded-lg">
-              <p className="font-bold text-lg italic">Game Backend - Under The Hood</p>
-              <p className="py-3">-----------------------------</p>
-              <div className="text-xs text-start mx-5">
-                <p>arrayIndex: {arrayIndex}</p>
-                <p>answerTyped: {answerTyped}</p>
-                <p>answerSubmitted: {answerSubmitted}</p>
-                <p>wordArray[arrayIndex]: {wordArray[arrayIndex]} </p>
-                <p>gameOver.toString(): {gameOver.toString()} </p>
-                <p>gameWin.toString(): {gameWin.toString()} </p>
-                <p>submittedCounter: {submittedCounter} </p>
-              </div>
+          <div className="py-5 text-center bg-yellow-200/80 mb-3 mt-4 rounded-lg">
+            <p className="font-bold text-lg italic">
+              Game Backend - Under The Hood
+            </p>
+            <p className="py-3">-----------------------------</p>
+            <div className="text-xs text-start mx-5">
+              <p>arrayIndex: {arrayIndex}</p>
+              <p>answerTyped: {answerTyped}</p>
+              <p>answerSubmitted: {answerSubmitted}</p>
+              <p>wordArray[arrayIndex]: {wordArray[arrayIndex]} </p>
+              <p>gameOver.toString(): {gameOver.toString()} </p>
+              <p>gameWin.toString(): {gameWin.toString()} </p>
+              <p>submittedCounter: {submittedCounter} </p>
             </div>
           </div>
-        )}
-      
-
-
+        </div>
+      )}
     </div> // Main DIV
   );
 }
