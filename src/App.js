@@ -8,6 +8,9 @@ import AnswerList from "./components/AnswerList";
 import AppDescription from "./components/AppDescription";
 import GameBackend from "./components/GameBackend";
 
+// PR for JAKZ - NEWEST BRANCH
+// Getting Ready to be roasted haha
+
 function App() {
   // Random words array
   // eslint-disable-next-line
