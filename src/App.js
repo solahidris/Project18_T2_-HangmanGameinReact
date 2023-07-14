@@ -8,8 +8,7 @@ import AnswerList from "./components/AnswerList";
 import AppDescription from "./components/AppDescription";
 import GameBackend from "./components/GameBackend";
 
-// PR for JAKZ
-// Getting Ready to be roasted haha
+// ...
 
 function App() {
   // Random words array
